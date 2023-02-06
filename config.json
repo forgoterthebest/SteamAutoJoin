@@ -1,5 +1,7 @@
 {
     "username": "ENTER_LOGIN_HERE",
     "password": "ENTER_PASSWORD_HERE",
-    "api_key": "ENTER_API_KEY_HERE (OPTIONAL)"
+    "api_key": "ENTER_API_KEY_HERE (OPTIONAL)",
+    "start_id": 1,
+    "only_words": "false"
 }

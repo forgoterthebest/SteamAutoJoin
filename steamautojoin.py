@@ -1,31 +1,42 @@
-from selenium import webdriver
+import selenium
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import time
 import re
 import json
+import colorama
+from colorama import Fore, Back, Style
+import art
 
 class SteamAutoJoin():
     def __init__(self, config: dict):
         self.username = config["username"]
         self.password = config["password"]
         self.api_key = config["api_key"]
+        self.start_id = config["start_id"]
+        self.only_words = config["only_words"]
 
         self.driver_options = Options()
+        self.driver_options.headless = True
+        self.driver_options.add_argument("--window-size= 1920, 1080")
         self.driver_options.add_experimental_option("detach", True)
         self.driver_options.add_experimental_option("excludeSwitches", ["enable-logging"])
-        self.driver = webdriver.Chrome("./chromedriver/chromedriver.exe", chrome_options = self.driver_options)
+        self.driver = selenium.webdriver.Chrome("./chromedriver/chromedriver.exe", chrome_options = self.driver_options)
 
         self.words = [x.lower() for x in json.load(open("./words.txt"))]
+        self.version = "1.0"
 
     def Start(self):
-        print("Starting SteamAutoJoin...")
+        colorama.init()    
 
-        print("Logging in...")
+        print(art.text2art("SteamAutoJoin")[:-2])
+        print(f"by: heapy\nVersion: {self.version}\n")
+
+        self._print("Starting SteamAutoJoin...")
+        self._print("Logging in...")
         self._login()
-        print("Logged in.")
 
-        gid = 1
+        gid = self.start_id
 
         while True:
             self._join(gid)
@@ -33,30 +44,35 @@ class SteamAutoJoin():
 
     def _login(self):
         try:
-            self.driver.get("https://steamcommunity.com/login/home/")
+            login_url = "https://steamcommunity.com/login/home/"
+            self.driver.get(login_url)
 
             time.sleep(2)
 
-            self.driver.find_elements(By.CLASS_NAME, "newlogindialog_TextInput_2eKVn")[0].send_keys(self.username)
-            self.driver.find_elements(By.CLASS_NAME, "newlogindialog_TextInput_2eKVn")[1].send_keys(self.password)
-            self.driver.find_element(By.CLASS_NAME, "newlogindialog_SubmitButton_2QgFE").click()
+            login_inputs = self.driver.find_elements(By.XPATH, "//input[starts-with(@class, \"newlogindialog_TextInput\")]")
+            login_inputs[0].send_keys(self.username)
+            login_inputs[1].send_keys(self.password)
+            self.driver.find_element(By.XPATH, "//button[starts-with(@class, \"newlogindialog_SubmitButton\")]").click()
 
             time.sleep(2)
 
-            if self.driver.find_element(By.CLASS_NAME, "newlogindialog_PrimaryHeader_39uMK").text == "STEAM GUARD":
-                self.driver.find_element(By.CLASS_NAME, "newlogindialog_TextLink_1cnUQ").click()
+            find_errors = self.driver.find_elements(By.XPATH, "//div[starts-with(@class, \"newlogindialog_FormError\")]")
 
-                steam_guard = input("Please enter Steam Guard code: ")
+            if find_errors:
+                if find_errors[0].text != " ":
+                    raise Exception("Login credentials are not valid")
 
-                steam_guard_inputs = self.driver.find_elements(By.XPATH, "//div[@class='newlogindialog_SegmentedCharacterInput_1kJ6q']//input")
+            self._print("If you have Steam Guard enabled, accept login session from your mobile Steam app. (Reworked version of entering Steam Guard code soon).")
 
-                for index, steam_guard_input in enumerate(steam_guard_inputs):
-                    steam_guard_input.send_keys(steam_guard[index])
-
-                time.sleep(2)
+            while True:
+                current_url = self.driver.current_url
+                if current_url != login_url:
+                    self._success("Logged in.")
+                    break
 
         except:
-            print("Couldn't login, retrying...")
+            self._error("Couldn't login, retrying in 10s...")
+            time.sleep(10)
             self._login()
 
     def _join(self, id: int):
@@ -70,13 +86,27 @@ class SteamAutoJoin():
 
             self.driver.find_element(By.CLASS_NAME, "btn_green_white_innerfade").click()
 
-            print(f"Joined OG group with id {id}.")
+            self._print(f"Joined OG group with clantag \"{clantag.text}\" (ID: {id}).")
 
         except:
             pass
 
-    def _check_clantag(self, clantag: str, is_match = re.compile(r"[^a-z0-9]").search) -> bool:
-        if (len(clantag) <= 3 and not bool(is_match(clantag))) or clantag in self.words:
-            return True
+    def _check_clantag(self, clantag: str, is_match = re.compile(r"[^a-z0-9^.]").search) -> bool:
+        if self.only_words != "true":
+            if (len(clantag) <= 3 and not bool(is_match(clantag))) or clantag in self.words:
+                return True
+
+        else:
+            if clantag in self.words:
+                return True
 
         return False
+
+    def _print(self, message: str):
+        print(f"[ {Fore.BLUE}SAJ{Style.RESET_ALL} ] {message}")
+
+    def _success(self, message: str):
+        print(f"[ {Fore.BLUE}SAJ{Style.RESET_ALL} ] {Fore.GREEN}{message}{Style.RESET_ALL}")
+
+    def _error(self, message: str):
+        print(f"[ {Fore.BLUE}SAJ{Style.RESET_ALL} ] {Fore.RED}{message}{Style.RESET_ALL}")
