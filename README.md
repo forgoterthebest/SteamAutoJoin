@@ -25,5 +25,5 @@ SAJ (SteamAutoJoin) is a Python script which logs into your Steam account and se
 > Example: ```"anonymous"```
 - **start_id** - ID from which SAJ will start searching for groups.
 > Default: ```1```
-- **only_words** - If enabled, it will only join groups where their clan tag is in a [list containing 479 000 English words](https://github.com/dwyl/english-words).
+- **only_words** - If enabled, SAJ will join groups only when clan tag is in a [list containing 479 000 English words](https://github.com/dwyl/english-words).
 > Default: ```"false"```. Set to ```"true"```, if you want to enable it.
