@@ -12,7 +12,6 @@ class SteamAutoJoin():
     def __init__(self, config: dict):
         self.username = config["username"]
         self.password = config["password"]
-        self.api_key = config["api_key"]
         self.start_id = config["start_id"]
         self.only_words = config["only_words"]
 
@@ -24,7 +23,7 @@ class SteamAutoJoin():
         self.driver = selenium.webdriver.Chrome("./chromedriver/chromedriver.exe", chrome_options = self.driver_options)
 
         self.words = [x.lower() for x in json.load(open("./words.txt"))]
-        self.version = "1.0"
+        self.version = "1.0.1"
 
     def Start(self):
         colorama.init()    
@@ -86,7 +85,7 @@ class SteamAutoJoin():
 
             self.driver.find_element(By.CLASS_NAME, "btn_green_white_innerfade").click()
 
-            self._print(f"Joined OG group with clantag \"{clantag.text}\" (ID: {id}).")
+            self._print(f"Joined group with clan tag \"{clantag.text}\" (ID: {id}).")
 
         except:
             pass
