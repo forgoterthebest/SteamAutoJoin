@@ -76,7 +76,7 @@ class SteamAutoJoin():
             pass
 
     def _check_clantag(self, clantag: str, is_match = re.compile(r"[^a-z0-9]").search) -> bool:
-        if (len(clantag) < 4 and not bool(is_match(clantag))) or clantag in self.words:
+        if (len(clantag) <= 3 and not bool(is_match(clantag))) or clantag in self.words:
             return True
 
         return False
