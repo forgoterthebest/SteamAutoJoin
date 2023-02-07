@@ -5,16 +5,12 @@ import time
 import re
 import json
 import colorama
-from colorama import Fore, Back, Style
+from colorama import Fore, Style
 import art
+from datetime import datetime
 
 class SteamAutoJoin():
-    def __init__(self, config: dict):
-        self.username = config["username"]
-        self.password = config["password"]
-        self.start_id = config["start_id"]
-        self.only_words = config["only_words"]
-
+    def __init__(self):
         self.driver_options = Options()
         self.driver_options.headless = True
         self.driver_options.add_argument("--window-size= 1920, 1080")
@@ -23,7 +19,7 @@ class SteamAutoJoin():
         self.driver = selenium.webdriver.Chrome("./chromedriver/chromedriver.exe", chrome_options = self.driver_options)
 
         self.words = [x.lower() for x in json.load(open("./words.txt"))]
-        self.version = "1.0.1"
+        self.version = "1.0.2"
 
     def Start(self):
         colorama.init()    
@@ -43,6 +39,14 @@ class SteamAutoJoin():
 
     def _login(self):
         try:
+            config_file = open("./config.json")
+            config = json.load(config_file)
+            self.username = config["username"]
+            self.password = config["password"]
+            self.start_id = config["start_id"]
+            self.only_words = config["only_words"]
+            config_file.close()
+
             login_url = "https://steamcommunity.com/login/home/"
             self.driver.get(login_url)
 
@@ -102,10 +106,13 @@ class SteamAutoJoin():
         return False
 
     def _print(self, message: str):
-        print(f"[ {Fore.BLUE}SAJ{Style.RESET_ALL} ] {message}")
+        print(f"[{Fore.BLUE}SAJ{Style.RESET_ALL}] [{self._now()}] {message}")
 
     def _success(self, message: str):
-        print(f"[ {Fore.BLUE}SAJ{Style.RESET_ALL} ] {Fore.GREEN}{message}{Style.RESET_ALL}")
+        print(f"[{Fore.BLUE}SAJ{Style.RESET_ALL}] [{self._now()}] {Fore.GREEN}{message}{Style.RESET_ALL}")
 
     def _error(self, message: str):
-        print(f"[ {Fore.BLUE}SAJ{Style.RESET_ALL} ] {Fore.RED}{message}{Style.RESET_ALL}")
+        print(f"[{Fore.BLUE}SAJ{Style.RESET_ALL}] [{self._now()}] {Fore.RED}{message}{Style.RESET_ALL}")
+
+    def _now(self) -> str:
+        return datetime.now().strftime("%H:%M:%S")
