@@ -1,6 +1,6 @@
 <div align="center">
  <h1>SteamAutoJoin</h1>
- <p>Python script that automatically joins Steam groups for you with cool/OG clan tags.</p>
+ <p>Python script that automatically joins Steam groups for you with cool/rare clan tags.</p>
 </div>
 
 <br/>
