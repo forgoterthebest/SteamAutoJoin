@@ -14,7 +14,7 @@
 <br/>
 
 ## About
-SAJ (SteamAutoJoin) is a Python script which logs into your Steam account and searches for groups with cool/OG clan tags. If found, SAJ will join them. Script is easy-to-use and configurable.
+SAJ (SteamAutoJoin) is a Python script which logs into your Steam account and searches for groups with cool/rare clan tags. If found, SAJ will join them. Script is easy-to-use and configurable.
 
 <br/>
 
