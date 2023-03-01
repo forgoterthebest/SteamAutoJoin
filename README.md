@@ -29,6 +29,8 @@ Every option below is stored in ```config.json```.
 - **only_words** - If enabled, SAJ will join groups only when clan tag is in a [list containing ~479k English words](https://github.com/dwyl/english-words).
 > Default: ```"false"```. Set to ```"true"```, if you want to enable it.
 
+<br/>
+
 ## Usage
 1. Install Python modules using ```pip install -r requirements.txt``` or ```pip install art colorama selenium```.
 2. <a href="#configuration">Configure script</a>.
