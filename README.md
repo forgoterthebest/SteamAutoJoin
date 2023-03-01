@@ -19,6 +19,7 @@ SAJ (SteamAutoJoin) is a Python script which logs into your Steam account and se
 <br/>
 
 ## Configuration
+Every option below is stored in ```config.json```.
 - **username** - Account's username.
 > Example: ```"anonymous"```
 - **password** - Account's password.
@@ -27,3 +28,8 @@ SAJ (SteamAutoJoin) is a Python script which logs into your Steam account and se
 > Default: ```1```
 - **only_words** - If enabled, SAJ will join groups only when clan tag is in a [list containing ~479k English words](https://github.com/dwyl/english-words).
 > Default: ```"false"```. Set to ```"true"```, if you want to enable it.
+
+## Usage
+1. Install Python modules using ```pip install -r requirements.txt``` or ```pip install art colorama selenium```.
+2. <a href="#configuration">Configure script</a>.
+3. Run ```main.py``` using ```python main.py```. If login details are correct, you should see the script doing its job without any problems.
