@@ -1,6 +1,6 @@
-from steamautojoin import SteamAutoJoin
+import SteamAutoJoin
 import os
 
 if __name__ == "__main__":
     os.system("cls" if os.name == "nt" else "clear")
-    SteamAutoJoin().Start()
+    SteamAutoJoin.start()
