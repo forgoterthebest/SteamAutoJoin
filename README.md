@@ -24,6 +24,6 @@ Every option below is stored in ```config.json```.
 > Default: ```"false"```. Set to ```"true"```, if you want to enable it.
 
 ## Usage
-1. Install Python modules using ```pip install -r requirements.txt``` or ```pip install art colorama selenium```.
+1. Install Python modules using ```pip install -r requirements.txt``` or ```pip install art colorama requests selenium```.
 2. <a href="#configuration">Configure script</a>.
 3. Run ```main.py``` using ```python main.py```. If login details are correct, you should see the script doing its job without any problems.
