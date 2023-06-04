@@ -31,16 +31,16 @@ class Steam():
 
             time.sleep(2)
 
-            login_inputs = self.driver.find_elements(By.XPATH, "//input[starts-with(@class, \"newlogindialog_TextInput\")]")
+            login_inputs = self.driver.find_elements(By.XPATH, "//input[contains(@class, \"TextInput\")]")
             login_inputs[0].send_keys(self.config.username)
             login_inputs[1].send_keys(self.config.password)
-            self.driver.find_element(By.XPATH, "//button[starts-with(@class, \"newlogindialog_SubmitButton\")]").click()
+            self.driver.find_element(By.XPATH, "//button[contains(@class, \"SubmitButton\")]").click()
 
             time.sleep(2)
 
             self.check_errors()
 
-            guard_dialog = self.driver.find_elements(By.XPATH, "//div[starts-with(@class, \"newlogindialog_SegmentedCharacterInput\")]")
+            guard_dialog = self.driver.find_elements(By.XPATH, "//div[contains(@class, \"SegmentedCharacterInput\")]")
 
             if guard_dialog:
                 input = Terminal.input("Enter Steam Guard code: ")
@@ -80,16 +80,16 @@ class Steam():
             pass
 
     def check_errors(self):
-        error_form = self.driver.find_elements(By.XPATH, "//div[starts-with(@class, \"newlogindialog_FormError\")]")
+        error_form = self.driver.find_elements(By.XPATH, "//div[contains(@class, \"FormError\")]")
 
         if error_form:
             if error_form[0].text != " ":
                 raise Exception("Login credentials are not valid")
             
-        failure_form = self.driver.find_elements(By.XPATH, "//div[starts-with(@class, \"newlogindialog_Failure\")]")
+        failure_form = self.driver.find_elements(By.XPATH, "//div[contains(@class, \"Failure\")]")
 
         if failure_form:
-            error_code = self.driver.find_element(By.XPATH, "//div[starts-with(@class, \"newlogindialog_MutedErrorReference\")]")
+            error_code = self.driver.find_element(By.XPATH, "//div[contains(@class, \"MutedErrorReference\")]")
 
             raise Exception(f"Failure form appeared with error code: {error_code.text[-3:]}")
 
