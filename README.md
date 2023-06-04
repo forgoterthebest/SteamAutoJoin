@@ -24,7 +24,7 @@ SAJ (SteamAutoJoin) is a Python script which logs into your Steam account and se
 3. Run ```main.py``` using ```python main.py```. If login details are correct, you should see the script doing its job without any problems.
 
 ## Configuration
-Every option below is stored in ```config.json```.
+Every option below is stored in [config.json](./config.json).
 - **username** - Account's username.
 > Example: ```"anonymous"```
 - **password** - Account's password.
