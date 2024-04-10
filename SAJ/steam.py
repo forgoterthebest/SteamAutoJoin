@@ -30,17 +30,22 @@ class Steam():
             self.driver.get(login_url)
 
             time.sleep(2)
-
-            login_inputs = self.driver.find_elements(By.XPATH, "//input[contains(@class, \"TextInput\")]")
-            login_inputs[0].send_keys(self.config.username)
-            login_inputs[1].send_keys(self.config.password)
-            self.driver.find_element(By.XPATH, "//button[contains(@class, \"SubmitButton\")]").click()
+            
+            # basically. Login prompt has changed
+            # ...and the things that remain static are
+            # type="text", "password", "submit"
+            login_input = self.driver.find_elements(By.XPATH, "//input[contains(@type, \"text\")]")
+            login_input[0].send_keys(self.config.username)
+            password_input = self.driver.find_elements(By.XPATH, "//input[contains(@type, \"password\")]")
+            password_input[0].send_keys(self.config.password) #very cool fix
+            self.driver.find_element(By.XPATH, "//button[contains(@type, \"submit\")]").click()
 
             time.sleep(2)
 
             self.check_errors()
 
-            guard_dialog = self.driver.find_elements(By.XPATH, "//div[contains(@class, \"SegmentedCharacterInput\")]")
+            guard_dialog = self.driver.find_elements(By.XPATH, "//div[contains(@class, \"SegmentedCharacterInput\")]") 
+            # I didn't use Steam Guard when testing
 
             if guard_dialog:
                 input = Terminal.input("Enter Steam Guard code: ")
